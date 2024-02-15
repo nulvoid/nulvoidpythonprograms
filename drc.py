@@ -222,7 +222,112 @@ def settings():
 
 def ratingcalc():
     global rostername,champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf,winweight,topfiveweight,toptenweight,poleweight,lapweight,ledweight,startweight,finweight,rafweight,llfweight,normmin,normmax
-    
+    while True:
+        os.system('cls')
+        prompts=[
+            "Driver name: ",
+            "Races started: ",
+            "Races won: ",
+            "Top fives: ",
+            "Top tens: ",
+            "Poles: ",
+            "Laps ran: ",
+            "Laps led: ",
+            "Average start: ",
+            "Average finish: ",
+            "RAF: ",
+            "LLF: "
+        ]
+        userinputs=[]
+        for prompt in prompts:
+            userinput=input(prompt)
+            if userinput=='-1':return
+            userinputs.append(userinput)
+        if len(userinputs)==len(prompts):
+            drivername,racestart,driverwin,driverfive,driverten,driverpole,driverlap,driverled,driverstart,driverfin,driverraf,driverllf=userinputs
+        os.system('cls')
+        print(f"Driver name: {drivername}")
+        print(f"Races started: {racestart}")
+        print(f"Races won: {driverwin}")
+        print(f"Top fives: {driverfive}")
+        print(f"Top tens: {driverten}")
+        print(f"Poles: {driverpole}")
+        print(f"Laps ran: {driverlap}")
+        print(f"Laps led: {driverled}")
+        print(f"Average start: {driverstart}")
+        print(f"Average finish: {driverfin}")
+        print(f"RAF: {driverraf}")
+        print(f"LLF: {driverllf}")
+        print()
+        print("Confirm data entry? Y/N")
+        userinput=input().lower()
+        racestart=float(racestart)
+        driverwin=float(driverwin)
+        driverfive=float(driverfive)
+        driverten=float(driverten)
+        driverpole=float(driverpole)
+        driverlap=float(driverlap)
+        driverled=float(driverled)
+        driverstart=float(driverstart)
+        driverfin=float(driverfin)
+        driverraf=float(driverraf)
+        driverllf=float(driverllf)
+        maxrace=float(maxrace)
+        minrace=float(minrace)
+        maxwin=float(maxwin)
+        minwin=float(minwin)
+        maxtopfive=float(maxtopfive)
+        mintopfive=float(mintopfive)
+        maxtopten=float(maxtopten)
+        mintopten=float(mintopten)
+        maxpole=float(maxpole)
+        minpole=float(minpole)
+        maxlap=float(maxlap)
+        minlap=float(minlap)
+        maxled=float(maxled)
+        minled=float(minled)
+        minled=float(minled)
+        worststart=float(worststart)
+        bestfin=float(bestfin)
+        worstfin=float(worstfin)
+        maxraf=float(maxraf)
+        minraf=float(minraf)
+        maxllf=float(maxllf)
+        minllf=float(minllf)
+        winweight=float(winweight)
+        topfiveweight=float(topfiveweight)
+        toptenweight=float(toptenweight)
+        poleweight=float(poleweight)
+        lapweight=float(lapweight)
+        ledweight=float(ledweight)
+        startweight=float(startweight)
+        finweight=float(finweight)
+        rafweight=float(rafweight)
+        llfweight=float(llfweight)
+        normmin=float(normmin)
+        normmax=float(normmax)
+        if racestart<maxrace:compensatecalc()
+        ratewin=(((driverwin-minwin)/(maxwin-minwin))*100)*winweight
+        ratefive=(((driverfive-mintopfive)/(maxtopfive-mintopfive))*100)*topfiveweight
+        rateten=(((driverten-mintopten)/(maxtopten-mintopten))*100)*toptenweight
+        ratepole=(((driverpole-minpole)/(maxpole-minpole))*100)*poleweight
+        ratelap=(((driverlap-minlap)/(maxlap-minlap))*100)*lapweight
+        rateled=(((driverled-minled)/(maxled-minled))*100)*ledweight
+        ratestart=(((driverstart-worststart)/(beststart-worststart))*100)*startweight
+        ratefin=(((driverfin-worstfin)/(bestfin-worstfin))*100)*finweight
+        rateraf=(((driverraf-minraf)/(maxraf-minraf))*100)*rafweight
+        ratellf=(((driverllf-minllf)/(maxllf-minllf))*100)*llfweight
+        rating=normmin+(((ratewin+ratefive+rateten+ratepole+ratelap+rateled+ratestart+ratefin+rateraf+ratellf)*(normmax-normmin))/100)
+        if rating>normmax:rating=normmax
+        os.system('cls')
+        #print(f"{drivername}'s rating:")
+        print(rating)
+        input()
+        
+def compensatecalc():
+    print("compensation")
+    input()
+    return
 
 if __name__=="__main__":
     import os
