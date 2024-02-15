@@ -1,6 +1,4 @@
 def mainmenu():
-    global rostername,champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf
-    #have to basically refresh them with the global command so the program isnt editing a local variable instead of the one being used in the whole program
     while True:
         os.system('cls')
         print("Welcome to Tyler's Driver Rating Calculator")
@@ -31,13 +29,16 @@ def mainmenu():
             loaddata()
         elif userinput=='save':
             savedata()
+        elif userinput=='settings':
+            settings()
+        elif userinput=='calc':
+            ratingcalc()
         else:
-            print("Invalid choice.")
-            input()
+            input("Invalid choice.")
 
 def viewdata():
     os.system('cls')
-    global rostername,champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf
+    global rostername,champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf,winweight,topfiveweight,toptenweight,poleweight,lapweight,ledweight,startweight,finweight,rafweight,llfweight,normmin,normmax
     print(f"Roster name: {rostername}")
     print(f"Best championship finish: {champfinbest}")
     print(f"Worst championship finish: {champfinworst}")
@@ -74,8 +75,7 @@ def viewdata():
     print(f"RAF weight: {rafweight*100}%")
     print(f"LLF weight: {llfweight*100}%")
     print(f"Normalization minimum: {normmin}%")
-    print(f"Normalization maximum: {normmax}%")
-    input()
+    input(f"Normalization maximum: {normmax}%")
 
 def changelog():
     os.system('cls')
@@ -87,60 +87,42 @@ def editdata():
     os.system('cls')
     global rostername,champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf
     print("Enter the number -1 to exit without saving.")
-    dummya=input("Roster name: ").lower()
-    if dummya=='-1':return
-    dummyb=input("Highest championship finish: ")
-    if dummyb=='-1':return
-    dummyc=input("Lowest championship finish: ")
-    if dummyc=='-1':return
-    dummyd=input("Maximum races entered: ")
-    if dummyd=='-1':return
-    dummye=input("Minimum races entered: ")
-    if dummye=='-1':return
-    dummyf=input("Maximum races won: ")
-    if dummyf=='-1':return
-    dummyg=input("Minimum races won: ")
-    if dummyg=='-1':return
-    dummyh=input("Maximum top fives: ")
-    if dummyh=='-1':return
-    dummyi=input("Minimum top fives: ")
-    if dummyi=='-1':return
-    dummyj=input("Maximum top tens: ")
-    if dummyj=='-1':return
-    dummyk=input("Minimum top tens: ")
-    if dummyk=='-1':return
-    dummyl=input("Maximum poles: ")
-    if dummyl=='-1':return
-    dummym=input("Minimum poles: ")
-    if dummym=='-1':return
-    dummyn=input("Maximum laps ran: ")
-    if dummyn=='-1':return
-    dummyo=input("Minimum laps ran: ")
-    if dummyo=='-1':return
-    dummyp=input("Maximum laps led: ")
-    if dummyp=='-1':return
-    dummyq=input("Minimum laps led: ")
-    if dummyq=='-1':return
-    dummyr=input("Best average start: ")
-    if dummyr=='-1':return
-    dummys=input("Worst average start: ")
-    if dummys=='-1':return
-    dummyt=input("Best average finish: ")
-    if dummyt=='-1':return
-    dummyu=input("Worst average finish: ")
-    if dummyu=='-1':return
-    dummyv=input("Maximum RAFs: ")
-    if dummyv=='-1':return
-    dummyw=input("Minimum RAFs: ")
-    if dummyw=='-1':return
-    dummyx=input("Maximum LLFs: ")
-    if dummyx=='-1':return
-    dummyy=input("Minimum LLFs: ")
-    if dummyy=='-1':return
-    rostername,champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf=dummya,dummyb,dummyc,dummyd,dummye,dummyf,dummyg,dummyh,dummyi,dummyj,dummyk,dummyl,dummym,dummyn,dummyo,dummyp,dummyq,dummyr,dummys,dummyt,dummyu,dummyv,dummyw,dummyx,dummyy
+    prompts=[
+        "Roster name: ",
+        "Highest championship finish: ",
+        "Lowest championship finish: ",
+        "Maximum races entered: ",
+        "Minimum races entered: ",
+        "Maximum races won: ",
+        "Minimum races won: ",
+        "Maximum top fives: ",
+        "Minimum top fives: ",
+        "Maximum top tens: ",
+        "Minimum top tens: ",
+        "Maximum poles: ",
+        "Minimum poles: ",
+        "Maximum laps ran: ",
+        "Minimum laps ran: ",
+        "Maximum laps led: ",
+        "Minimum laps led: ",
+        "Best average start: ",
+        "Worst average start: ",
+        "Best average finish: ",
+        "Worst average finish: ",
+        "Maximum RAFs: ",
+        "Minimum RAFs: ",
+        "Maximum LLFs: ",
+        "Minimum LLFs: "
+    ]
+    userinputs=[]
+    for prompt in prompts:
+        userinput=input(prompt)
+        if userinput=='-1':return
+        userinputs.append(userinput)
+    if len(userinputs)==len(prompts):
+        rostername,champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf=userinputs
     os.system('cls')
-    print("Data pool entered.")
-    input()
+    input("Data pool entered.")
 
 def read_numbers_from_file(filename):
     #the function that ensures text files contain the correct number of data entries
@@ -159,13 +141,11 @@ def loaddata():
             filename+=".txt"
         storage=read_numbers_from_file(filename)
         if len(storage)!=24:
-            print("Invalid file. Please ensure text file contains all required data.")
-            input()
+            input("Invalid file. Please ensure text file contains all required data.")
             return
         champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf=storage
         rostername=filename[:-4]
-        print("Roster loaded.")
-        input()
+        input("Roster loaded.")
     except FileNotFoundError:
         print(f"Error: File '{filename}' not found.")
         input()
@@ -207,11 +187,42 @@ def savedata():
             file.write(f"\n{maxraf}")
             file.write(f"\n{maxllf}")
             file.write(f"\n{minllf}")
-        print("Data pool saved.")
-        input()
+        input("Data pool saved.")
     except Exception as e:
         print("An error occurred:", e)
         input()
+  
+def settings():
+    os.system('cls')
+    global winweight,topfiveweight,toptenweight,poleweight,lapweight,ledweight,startweight,finweight,rafweight,llfweight,normmin,normmax
+    print("Enter the number -1 to exit without saving.")
+    prompts=[
+        "Win weight%: ",
+        "Top five weight%: ",
+        "Top ten weight%: ",
+        "Pole weight%: ",
+        "Laps ran weight%: ",
+        "Laps led weight%: ",
+        "Average start weight%: ",
+        "Average finish weight%: ",
+        "RAF weight%: ",
+        "LLF weight%: ",
+        "Normalization minimum: ",
+        "Normalization maximum: ",
+    ]
+    userinputs=[]
+    for prompt in prompts:
+        userinput=input(prompt)
+        if userinput=='-1':return
+        userinputs.append(userinput)
+    if len(userinputs)==len(prompts):
+        winweight,topfiveweight,toptenweight,poleweight,lapweight,ledweight,startweight,finweight,rafweight,llfweight,normmin,normmax=userinputs
+    os.system('cls')
+    input("Settings saved.")
+
+def ratingcalc():
+    global rostername,champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf,winweight,topfiveweight,toptenweight,poleweight,lapweight,ledweight,startweight,finweight,rafweight,llfweight,normmin,normmax
+    
 
 if __name__=="__main__":
     import os
