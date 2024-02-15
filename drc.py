@@ -15,6 +15,7 @@ def mainmenu():
         print("To edit calculation settings, type 'Settings'")
         print("To view all current data, type 'View'")
         print("To view the changelog, type 'Log'")
+        print("To see the current to do list, type 'To Do'")
         print("To quit, type 'Exit'")
         userinput=input(">").lower()
         if userinput=='exit':
@@ -33,8 +34,25 @@ def mainmenu():
             settings()
         elif userinput=='calc':
             ratingcalc()
+        elif userinput=='to do':
+            todo()
         else:
             input("Invalid choice.")
+
+def changelog():
+    os.system('cls')
+    print("v0.1 02/xx/2024")
+    print("-initial python build, port from basic to make a version i might eventually be willing to share")
+    input()
+
+def todo():
+    os.system('cls')
+    print("-save ratings to text file while calculating")
+    print("-check weight when inputting to ensure they add up to 100%")
+    print("-check normalization values to ensure they are valid iracing options")
+    print("-general error handling")
+    print(" -entered value outside data range")
+    input("-implement compensation calculation")
 
 def viewdata():
     os.system('cls')
@@ -76,12 +94,6 @@ def viewdata():
     print(f"LLF weight: {llfweight*100}%")
     print(f"Normalization minimum: {normmin}%")
     input(f"Normalization maximum: {normmax}%")
-
-def changelog():
-    os.system('cls')
-    print("v0.1 02/xx/2024")
-    print("-initial python build, port from basic to make a version i might eventually be willing to share")
-    input()
 
 def editdata():
     os.system('cls')
@@ -224,6 +236,7 @@ def ratingcalc():
     global rostername,champfinbest,champfinworst,maxrace,minrace,maxwin,minwin,maxtopfive,mintopfive,maxtopten,mintopten,maxpole,minpole,maxlap,minlap,maxled,minled,beststart,worststart,bestfin,worstfin,maxraf,minraf,maxllf,minllf,winweight,topfiveweight,toptenweight,poleweight,lapweight,ledweight,startweight,finweight,rafweight,llfweight,normmin,normmax
     while True:
         os.system('cls')
+        print("Enter the number -1 to exit without saving.")
         prompts=[
             "Driver name: ",
             "Races started: ",
@@ -319,9 +332,9 @@ def ratingcalc():
         ratellf=(((driverllf-minllf)/(maxllf-minllf))*100)*llfweight
         rating=normmin+(((ratewin+ratefive+rateten+ratepole+ratelap+rateled+ratestart+ratefin+rateraf+ratellf)*(normmax-normmin))/100)
         if rating>normmax:rating=normmax
-        os.system('cls')
-        #print(f"{drivername}'s rating:")
-        print(rating)
+        print()
+        print(f"{drivername}'s rating is:")
+        print(round(rating))
         input()
         
 def compensatecalc():
